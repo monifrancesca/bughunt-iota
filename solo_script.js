@@ -1,6 +1,13 @@
 // ! ! !
 // Three Bugs
 
+// line 26: add an index to the array so that array[i] isn't taking in the entire array of arrays, instead it's taking in each object one by one
+// Line 54: added Math.round
+// line 80: remove -1 from the returned basePercent
+// HARD MODE line 28: added commas, spaces and other styling
+// PRO MODE: added a style for li elements in attached stylesheet
+// PRO EXTENDED MODE: Bootstrap
+
 var arrayAtticus = ["Atticus", "2405", "47000", 3];
 var arrayJem = ["Jem", "62347", "63500", 4];
 var arrayBoo = ["Boo", "11435", "54000", 3];
@@ -16,9 +23,9 @@ position = document.getElementById('content');
 //Loop the array, extracting each array and writing information to the DOM
 //Note that the information is not 'clean'
 for(var i = 0; i < array.length; i++){
-	array[i] = calculateSTI(array);
+	array[i] = calculateSTI(array[i]);
  	newEl = document.createElement('li');
-	newText = document.createTextNode(array[i]);
+	newText = document.createTextNode(array[i][0] + ', ' + array[i][1] + '%, $' + array[i][2] + ', $' + array[i][3]);
 	newEl.appendChild(newText);
 	position.appendChild(newEl);
 }
@@ -28,9 +35,15 @@ function calculateSTI(array1) {
   var newArray = [];
   newArray[0] = array1[0];
 
-  var employeeNumber = array1[1];
-  var baseSalary = array1[2];
+  //console.log(array1[0]);
+
+  var employeeNumber = (array1[1]);
+  var baseSalary = (array1[2]);
   var reviewScore = array1[3];
+
+  //console.log(employeeNumber);
+  //console.log(baseSalary);
+  //console.log(reviewScore);
 
   var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) - getIncomeAdjustment(baseSalary);
   if(bonus > 0.13){
@@ -38,7 +51,7 @@ function calculateSTI(array1) {
   }
 
   newArray[1] = bonus;
-  newArray[2] = baseSalary * (1.0 + bonus);
+  newArray[2] = Math.round(baseSalary * (1.0 + bonus));
   newArray[3] = Math.round(baseSalary * bonus);
   console.log(newArray[0] + " " + newArray[1] + " " + newArray[2] + " " + newArray[3]);
   return newArray;
@@ -64,7 +77,7 @@ function getBaseSTI(reviewScore) {
       basePercent = 0.10;
       break;
   }
-  return basePercent - 1; 
+  return basePercent;
 }
 
 function getYearAdjustment(employeeNumber) {
